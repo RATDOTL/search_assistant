@@ -12,7 +12,7 @@ class WikipediaApi {
     'action': 'query',
     'list': 'random',
     'rnnamespace': '0',
-    'rnlimit': '10',
+    'rnlimit': '40',
   };
 
   // インスタンス

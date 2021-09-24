@@ -8,11 +8,12 @@ class WikipediaProvider extends ChangeNotifier {
 
   // 記事リスト
   List<WikipediaArticle> items = [];
-
+  List<WikipediaArticle> additems = [];
   // 記事リストを初期化する
   Future<void> init() async {
     // 記事リストをAPIから取得する
-    items = await WikipediaApi().request();
+    additems = await WikipediaApi().request();
+    items.addAll(additems);
     // リスナーに通知する
     notifyListeners();
   }
