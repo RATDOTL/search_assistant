@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.hatahata.SearchAsistant.search_assistant">
-   <application
-        android:label="search_assistant"
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+        android:label="RanWord"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
