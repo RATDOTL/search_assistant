@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   universal_html: ^2.0.8
-  url_launcher: ^6.0.11
+  url_launcher: ^6.0.12
   http: ^0.13.3
   provider: ^6.0.0
   sqflite: ^2.0.0+4
