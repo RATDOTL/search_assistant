@@ -29,7 +29,8 @@ class _HomeState extends State<Home> {
             actions: [
               TextButton(
                 child: Text('historyButton'.tr(),
-                    style: const TextStyle(fontSize: 20,color: Colors.lightGreen)),
+                    style: const TextStyle(
+                        fontSize: 20, color: Colors.lightGreen)),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const History()));
@@ -44,13 +45,18 @@ class _HomeState extends State<Home> {
                       onTap: () async {
                         if (await canLaunch(
                             "https://sites.google.com/view/ratdotltin/random-word/RanWord_利用規約?authuser=0")) {
-                          await launch("https://sites.google.com/view/ratdotltin/random-word/RanWord_利用規約?authuser=0");
+                          await launch(
+                              "https://sites.google.com/view/ratdotltin/random-word/RanWord_利用規約?authuser=0");
                         }
                       }),
                   PopupMenuItem(
-                    value: 'ppButton'.tr(),
-                    child: Text('ppButton'.tr()),
-                  ),
+                      value: 'ppButton'.tr(),
+                      child: Text('ppButton'.tr()),
+                      onTap: () async {
+                        if (await canLaunch("https://sites.google.com")) {
+                          await launch("https://sites.google.com");
+                        }
+                      }),
                 ],
               )
             ],
@@ -78,9 +84,7 @@ class _HomeState extends State<Home> {
                             id: provider.items[index].id,
                             title: provider.items[index].title,
                           );
-                          setState(() async {
-                            await HistoryData.insertHistoryData(history);
-                          });
+                          await HistoryData.insertHistoryData(history);
                         },
                       ),
                     );
@@ -97,7 +101,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         provider.init(context);
                       },
-                      child: const Text("もっと見る")),
+                      child: Text('SeeMore'.tr())),
                 ),
                 Container(
                   height: 20,

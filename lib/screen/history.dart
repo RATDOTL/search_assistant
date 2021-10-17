@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:search_assistant/screen/home.dart';
@@ -43,14 +42,23 @@ class _HistoryState extends State<History> {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                      title: Text(_historyList[index].title),
-                      onTap: () async {
-                        if (await canLaunch("https://www.google.com/search?q=" +
-                            _historyList[index].title)) {
-                          await launch("https://www.google.com/search?q=" +
-                              _historyList[index].title);
-                        }
-                      }),
+                    title: Text(_historyList[index].title),
+                    onTap: () async {
+                      if (await canLaunch("https://www.google.com/search?q=" +
+                          _historyList[index].title)) {
+                        await launch("https://www.google.com/search?q=" +
+                            _historyList[index].title);
+                      }
+                    },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        HistoryData.deleteHistoryData(_historyList[index].id);
+                        _historyList.removeAt(index);
+                        setState(() {});
+                      },
+                    ),
+                  ),
                 );
               },
             ),
