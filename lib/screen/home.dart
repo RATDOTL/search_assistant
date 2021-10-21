@@ -1,11 +1,13 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:search_assistant/screen/history.dart';
 import 'package:search_assistant/service/providers/wikipedia_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../main.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,10 +18,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _selectedValue = 'historyButton'.tr();
+  final BannerAd myBanner = BannerAd(
+    adUnitId: getTestAdBannerUnitId(),
+    size: AdSize.largeBanner,
+    request: const AdRequest(),
+    listener: const BannerAdListener(),
+  );
 
   @override
   Widget build(BuildContext context) {
     context.read<WikipediaProvider>().init(context);
+    myBanner.load();
+    final AdWidget adWidget = AdWidget(ad: myBanner);
+    final Container adContainer = Container(
+      alignment: Alignment.center,
+      child: adWidget,
+      width: myBanner.size.width.toDouble(),
+      height: myBanner.size.height.toDouble(),
+    );
     return Consumer<WikipediaProvider>(
       builder: (context, provider, child) {
         return Scaffold(
@@ -61,53 +77,61 @@ class _HomeState extends State<Home> {
               )
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.items.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(provider.items[index].title),
-                        onTap: () async {
-                          if (await canLaunch(
-                              "https://www.google.com/search?q=" +
-                                  provider.items[index].title)) {
-                            await launch("https://www.google.com/search?q=" +
-                                provider.items[index].title);
-                          }
+          body: Column(
+            children: [
+              adContainer,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: provider.items.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(provider.items[index].title),
+                              onTap: () async {
+                                if (await canLaunch(
+                                    "https://www.google.com/search?q=" +
+                                        provider.items[index].title)) {
+                                  await launch(
+                                      "https://www.google.com/search?q=" +
+                                          provider.items[index].title);
+                                }
 
-                          var history = HistoryData(
-                            id: provider.items[index].id,
-                            title: provider.items[index].title,
+                                var history = HistoryData(
+                                  id: provider.items[index].id,
+                                  title: provider.items[index].title,
+                                );
+                                await HistoryData.insertHistoryData(history);
+                              },
+                            ),
                           );
-                          await HistoryData.insertHistoryData(history);
                         },
                       ),
-                    );
-                  },
-                ),
-                Container(
-                  height: 40,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue),
-                    borderRadius: BorderRadius.circular(20),
+                      Container(
+                        height: 40,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: TextButton(
+                            onPressed: () {
+                              provider.init(context);
+                            },
+                            child: Text('SeeMore'.tr())),
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                    ],
                   ),
-                  child: TextButton(
-                      onPressed: () {
-                        provider.init(context);
-                      },
-                      child: Text('SeeMore'.tr())),
                 ),
-                Container(
-                  height: 20,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
