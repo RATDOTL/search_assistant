@@ -1,8 +1,10 @@
 {
   "homeTitle": "Search Candidates",
   "historyButton": "History",
+  "dpButton": "Developer Page",
   "tosButton": "Terms of Service",
   "ppButton": "Privacy Policy",
+  "creditButton": "Credit",
   "historyTitle": "Search History",
   "SeeMore": "See More"
 }

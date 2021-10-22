@@ -1,8 +1,10 @@
 {
   "homeTitle": "検索候補リスト",
   "historyButton": "履歴",
+  "dpButton": "開発者ページ",
   "tosButton": "利用規約",
   "ppButton": "プライバシーポリシー",
+  "creditButton": "クレジット",
   "historyTitle": "検索履歴",
   "SeeMore": "もっと見る"
 }
