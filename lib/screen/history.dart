@@ -2,6 +2,8 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:search_assistant/screen/home.dart';
+import 'package:search_assistant/screen/web_view.dart';
+import 'package:search_assistant/service/admob/AsInterstitial.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 
@@ -21,14 +23,14 @@ class _HistoryState extends State<History> {
   }
 
   final BannerAd myBanner = BannerAd(
-    adUnitId: getTestAdBannerUnitId(),
+    adUnitId: getAdBannerAdUnitId(),
     size: AdSize.largeBanner,
     request: const AdRequest(),
     listener: const BannerAdListener(),
   );
 
   final appname = 'Random Word';
-  final version = '1.0.0';
+  final version = '1.0.1';
 
   @override
   void initState() {
@@ -52,6 +54,17 @@ class _HistoryState extends State<History> {
         backgroundColor: Colors.deepPurple,
         title: Text('historyTitle'.tr()),
         actions: [
+          TextButton(
+            onPressed: () async {
+              if (await canLaunch(
+                  "https://sites.google.com/view/ratdotltin/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=0")) {
+                await launch(
+                    "https://sites.google.com/view/ratdotltin/%E3%83%9B%E3%83%BC%E3%83%A0?authuser=0");
+              }
+            },
+            child: const Text("RATDOTL",
+                style: TextStyle(fontSize: 20, color: Colors.red)),
+          ),
           PopupMenuButton<String>(
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -115,12 +128,9 @@ class _HistoryState extends State<History> {
                         child: ListTile(
                           title: Text(_historyList[index].title),
                           onTap: () async {
-                            if (await canLaunch(
-                                "https://www.google.com/search?q=" +
-                                    _historyList[index].title)) {
-                              await launch("https://www.google.com/search?q=" +
-                                  _historyList[index].title);
-                            }
+                            String searchWord =  "https://www.google.com/search?q=" +_historyList[index].title;
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => WebViewPage(searchWord)));
                           },
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),

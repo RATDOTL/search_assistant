@@ -51,14 +51,16 @@ class App extends StatelessWidget {
   }
 }
 
-String getTestAdBannerUnitId() {
-  String testBannerUnitId = "";
+String getAdBannerAdUnitId() {
+  String bannerUnitId = "";
   if (Platform.isAndroid) {
     // Android のとき
-    testBannerUnitId = "ca-app-pub-8481794717512198/2239456502";
+    bannerUnitId = "ca-app-pub-8481794717512198/2239456502";
+
   } else if (Platform.isIOS) {
     // iOSのとき
-    testBannerUnitId = '';
+    bannerUnitId = '';
   }
-  return testBannerUnitId;
+  return bannerUnitId;
+
 }

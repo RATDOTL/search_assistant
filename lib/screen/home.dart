@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:search_assistant/screen/history.dart';
+import 'package:search_assistant/screen/web_view.dart';
+import 'package:search_assistant/service/admob/AsInterstitial.dart';
 import 'package:search_assistant/service/providers/wikipedia_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,15 +21,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  InterstitialAd? _interstitialAd;
+  AdInterstitial adInterstitial = AdInterstitial();
+  var adNum = 0;
   final _selectedValue = 'historyButton'.tr();
   final BannerAd myBanner = BannerAd(
-    adUnitId: getTestAdBannerUnitId(),
+    adUnitId: getAdBannerAdUnitId(),
     size: AdSize.largeBanner,
     request: const AdRequest(),
     listener: const BannerAdListener(),
   );
   final appname = 'Random Word';
-  final version = '1.0.0';
+  final version = '1.0.1';
+
+  @override
+  void initState() {
+    super.initState();
+    adInterstitial.createAd();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _interstitialAd?.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +67,7 @@ class _HomeState extends State<Home> {
               TextButton(
                 child: Text('historyButton'.tr(),
                     style: const TextStyle(
-                        fontSize: 20, color: Colors.lightGreen)),
+                        fontSize: 20, color: Colors.red)),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const History()));
@@ -105,6 +124,10 @@ class _HomeState extends State<Home> {
           body: Column(
             children: [
               adContainer,
+              if (adNum % 3 == 0)
+                Container(
+                  child: Text('adText'.tr()),
+                ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -118,13 +141,17 @@ class _HomeState extends State<Home> {
                             child: ListTile(
                               title: Text(provider.items[index].title),
                               onTap: () async {
-                                if (await canLaunch(
-                                    "https://www.google.com/search?q=" +
-                                        provider.items[index].title)) {
-                                  await launch(
-                                      "https://www.google.com/search?q=" +
-                                          provider.items[index].title);
+                                adInterstitial.showAd();
+                                adNum = adNum + 1;
+                                if(adNum % 3 == 0) {
+                                  adInterstitial.createAd();
                                 }
+                                setState(() {
+
+                                });
+                                String searchWord =  "https://www.google.com/search?q=" +provider.items[index].title;
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => WebViewPage(searchWord)));
 
                                 var history = HistoryData(
                                   id: provider.items[index].id,
