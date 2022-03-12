@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   InterstitialAd? _interstitialAd;
   AdInterstitial adInterstitial = AdInterstitial();
-  var adNum = 0;
+  var adNum = 1;
   final _selectedValue = 'historyButton'.tr();
   final BannerAd myBanner = BannerAd(
     adUnitId: getAdBannerAdUnitId(),
@@ -37,7 +37,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    adInterstitial.createAd();
   }
 
   @override
@@ -124,7 +123,7 @@ class _HomeState extends State<Home> {
           body: Column(
             children: [
               adContainer,
-              if (adNum % 3 == 0)
+              if (adNum % 10 == 0)
                 Container(
                   child: Text('adText'.tr()),
                 ),
@@ -143,7 +142,7 @@ class _HomeState extends State<Home> {
                               onTap: () async {
                                 adInterstitial.showAd();
                                 adNum = adNum + 1;
-                                if(adNum % 3 == 0) {
+                                if(adNum % 10 == 0) {
                                   adInterstitial.createAd();
                                 }
                                 setState(() {
