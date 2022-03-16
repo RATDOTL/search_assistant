@@ -12,6 +12,7 @@ import 'package:search_assistant/service/providers/wikipedia_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
+import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -158,6 +159,13 @@ class _HomeState extends State<Home> {
                                 );
                                 await HistoryData.insertHistoryData(history);
                               },
+                              trailing: IconButton(
+                                icon: const Icon(Icons.share),
+                                onPressed: () {
+                                  Share.share(provider.items[index].title);
+                                  setState(() {});
+                                },
+                              ),
                             ),
                           );
                         },

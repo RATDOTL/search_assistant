@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,7 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   final String searchWord;
-
   _WebViewPageState(this.searchWord);
-
   late WebViewController _webViewController;
   bool _canGoBack = false;
   bool _canGoForward = false;
@@ -70,14 +69,26 @@ class _WebViewPageState extends State<WebViewPage> {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.share),
+                    onPressed: () async {
+                      String? url;
+                      url = await _webViewController.currentUrl();
+                      Share.share(url!);
+                      setState(() {});
+                    },
+                  ),
+                  Container(
+                    width: 15,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back,color: Colors.white),
                     onPressed: _canGoBack ? _webViewController.goBack : null,
                   ),
                   Container(
                     width: 15,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_forward),
+                    icon: const Icon(Icons.arrow_forward,color: Colors.white),
                     onPressed:
                         _canGoForward ? _webViewController.goForward : null,
                   ),

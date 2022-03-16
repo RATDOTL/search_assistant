@@ -4,6 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:search_assistant/screen/home.dart';
 import 'package:search_assistant/screen/web_view.dart';
 import 'package:search_assistant/service/admob/AsInterstitial.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../main.dart';
 
@@ -66,7 +67,8 @@ class _HistoryState extends State<History> {
                 style: TextStyle(fontSize: 20, color: Colors.red)),
           ),
           PopupMenuButton<String>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                   value: 'dpButton'.tr(),
                   child: Text('dpButton'.tr()),
@@ -106,7 +108,8 @@ class _HistoryState extends State<History> {
                       context: context,
                       applicationName: appname,
                       applicationVersion: version,
-                    );},
+                    );
+                  },
                 ),)
             ],
           )
@@ -128,20 +131,34 @@ class _HistoryState extends State<History> {
                         child: ListTile(
                           title: Text(_historyList[index].title),
                           onTap: () async {
-                            String searchWord =  "https://www.google.com/search?q=" +_historyList[index].title;
+                            String searchWord = "https://www.google.com/search?q=" +
+                                _historyList[index].title;
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => WebViewPage(searchWord)));
+                                MaterialPageRoute(builder: (context) =>
+                                    WebViewPage(searchWord)));
                           },
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () async {
-                              HistoryData.deleteHistoryData(
-                                  _historyList[index].id);
-                              _historyList.removeAt(index);
-                              setState(() {});
-                            },
-                          ),
+                          trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                              IconButton(
+                              icon: const Icon(Icons.share),
+                          onPressed: () {
+                            Share.share(_historyList[index].title);
+                            setState(() {});
+                          },
                         ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            HistoryData.deleteHistoryData(
+                                _historyList[index].id);
+                            _historyList.removeAt(index);
+                            setState(() {});
+                          },
+                        ),
+                        ],
+                      ),)
+                      ,
                       );
                     },
                   ),
