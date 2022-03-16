@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
-  final String searchWord;
-
+  String searchWord;
   WebViewPage(this.searchWord);
 
   @override
@@ -16,7 +15,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  final String searchWord;
+  String searchWord;
   _WebViewPageState(this.searchWord);
   late WebViewController _webViewController;
   bool _canGoBack = false;
@@ -73,7 +72,7 @@ class _WebViewPageState extends State<WebViewPage> {
                     onPressed: () async {
                       String? url;
                       url = await _webViewController.currentUrl();
-                      Share.share(url!);
+                      Share.share(searchWord.replaceAll("https://www.google.com/search?q=","") + '\n' + url!);
                       setState(() {});
                     },
                   ),
