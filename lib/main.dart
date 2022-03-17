@@ -59,7 +59,7 @@ String getAdBannerAdUnitId() {
 
   } else if (Platform.isIOS) {
     // iOSのとき
-    bannerUnitId = '';
+    bannerUnitId = "ca-app-pub-8481794717512198/2026114106";
   }
   return bannerUnitId;
 
