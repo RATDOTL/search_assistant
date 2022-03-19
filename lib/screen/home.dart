@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:search_assistant/screen/history.dart';
+import 'package:search_assistant/screen/serch_web_view.dart';
 import 'package:search_assistant/screen/web_view.dart';
 import 'package:search_assistant/service/admob/AsInterstitial.dart';
 import 'package:search_assistant/service/providers/wikipedia_provider.dart';
@@ -62,12 +61,31 @@ class _HomeState extends State<Home> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.deepPurple,
-            title: Text('homeTitle'.tr()),
+            title: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SearchWebViewPage()));
+                },
+                child: Row(
+                  children: [
+                    const Icon(Icons.search),
+                    Container(
+                      width: 8,
+                    ),
+                    Text('homeTitle'.tr(),
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white70)),
+                    Container(
+                      width: 20,
+                    ),
+                  ],
+                )),
             actions: [
               TextButton(
                 child: Text('historyButton'.tr(),
-                    style: const TextStyle(
-                        fontSize: 20, color: Colors.red)),
+                    style: const TextStyle(fontSize: 20, color: Colors.red)),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const History()));
@@ -107,16 +125,18 @@ class _HomeState extends State<Home> {
                         }
                       }),
                   PopupMenuItem(
-                      value: 'creditButton'.tr(),
-                      child: InkWell(
-                        child: Text('creditButton'.tr()),
-                        onTap: () {
-                          showLicensePage(
-                            context: context,
-                            applicationName: appname,
-                            applicationVersion: version,
-                          );},
-                      ),)
+                    value: 'creditButton'.tr(),
+                    child: InkWell(
+                      child: Text('creditButton'.tr()),
+                      onTap: () {
+                        showLicensePage(
+                          context: context,
+                          applicationName: appname,
+                          applicationVersion: version,
+                        );
+                      },
+                    ),
+                  )
                 ],
               )
             ],
@@ -143,15 +163,18 @@ class _HomeState extends State<Home> {
                               onTap: () async {
                                 adInterstitial.showAd();
                                 adNum = adNum + 1;
-                                if(adNum % 10 == 0) {
+                                if (adNum % 10 == 0) {
                                   adInterstitial.createAd();
                                 }
-                                setState(() {
-
-                                });
-                                String searchWord =  "https://www.google.com/search?q=" +provider.items[index].title;
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => WebViewPage(searchWord)));
+                                setState(() {});
+                                String searchWord =
+                                    "https://www.google.com/search?q=" +
+                                        provider.items[index].title;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            WebViewPage(searchWord)));
 
                                 var history = HistoryData(
                                   id: provider.items[index].id,

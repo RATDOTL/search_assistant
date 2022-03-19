@@ -41,6 +41,7 @@ dependencies:
   google_mobile_ads: ^0.13.5
   webview_flutter: ^2.1.2
   share: ^2.0.4
+  material_floating_search_bar: ^0.3.7
 
 dev_dependencies:
   flutter_test:

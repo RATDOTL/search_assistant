@@ -1,22 +1,19 @@
+
+
+
 import 'dart:io';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../main.dart';
+
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewPage extends StatefulWidget {
-  String searchWord;
-  WebViewPage(this.searchWord);
+class SearchWebViewPage extends StatefulWidget {
 
   @override
-  _WebViewPageState createState() => _WebViewPageState(searchWord);
+  _SearchWebViewPageState createState() => _SearchWebViewPageState();
 }
 
-class _WebViewPageState extends State<WebViewPage> {
-  String searchWord;
-  _WebViewPageState(this.searchWord);
+class _SearchWebViewPageState extends State<SearchWebViewPage> {
   late WebViewController _webViewController;
   bool _canGoBack = false;
   bool _canGoForward = false;
@@ -39,7 +36,7 @@ class _WebViewPageState extends State<WebViewPage> {
           ),
           Expanded(
             child: WebView(
-              initialUrl: searchWord,
+              initialUrl: "https://www.google.com/",
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (controller) {
                 _webViewController = controller;
@@ -72,7 +69,7 @@ class _WebViewPageState extends State<WebViewPage> {
                     onPressed: () async {
                       String? url;
                       url = await _webViewController.currentUrl();
-                      Share.share(searchWord.replaceAll("https://www.google.com/search?q=","") + '\n' + url!);
+                      Share.share(url!);
                       setState(() {});
                     },
                   ),
@@ -89,7 +86,7 @@ class _WebViewPageState extends State<WebViewPage> {
                   IconButton(
                     icon: const Icon(Icons.arrow_forward),
                     onPressed:
-                        _canGoForward ? _webViewController.goForward : null,
+                    _canGoForward ? _webViewController.goForward : null,
                   ),
                   Container(
                     width: 15,
