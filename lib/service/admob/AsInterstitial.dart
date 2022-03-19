@@ -58,7 +58,7 @@ class AdInterstitial {
     if (Platform.isAndroid) {
       return 'ca-app-pub-8481794717512198/6495262255';
     } else if (Platform.isIOS) {
-      return '';
+      return 'ca-app-pub-8481794717512198/5707242778';
     } else {
       //どちらでもない場合は、テスト用を返す
       return BannerAd.testAdUnitId;
